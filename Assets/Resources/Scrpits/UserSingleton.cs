@@ -29,4 +29,8 @@ public class UserSingleton : Singleton<UserSingleton> {
     {
         gold += goldEarned;
     }
+    public void NextStage()
+    {
+        currentStage++;
+    }
 }

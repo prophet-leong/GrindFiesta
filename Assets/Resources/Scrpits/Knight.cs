@@ -12,7 +12,7 @@ public class Knight : Hero {
         //basic init
         attack = 1;
         upgradeLevel = 1;
-        price = 1;
+        price = 2;
         attackTimeConst = 100.0f;
         attackTime = attackTimeConst;
         //position for this overall holder
@@ -36,6 +36,15 @@ public class Knight : Hero {
         //anim.SetInteger("State", 0);
         /*****************************************************************/
 	}
+    public virtual void UpgradeStats()
+    {
+        if (UserSingleton.GetInstance().gold - price > 0)
+        {
+            attack += (int)(0.5f * UserSingleton.GetInstance().currentStage);
+            UserSingleton.GetInstance().gold -= price;
+            price += (int)(price * 1.25f);
+        }
+    }
     // Update is called once per frame
     public override void Update()
     {

@@ -7,6 +7,7 @@ public class Hero : MonoBehaviour {
     public int attack;
     public int upgradeLevel;
     public int price;
+    public float previousPrice;
     public float attackTime;
     public float attackTimeConst;
 	// Use this for initialization
@@ -31,6 +32,15 @@ public class Hero : MonoBehaviour {
         {
             attackTime = attackTimeConst;
             Attack();
+        }
+    }
+    public virtual void UpgradeStats()
+    {
+        if(UserSingleton.GetInstance().gold - price > 0)
+        {
+            attack += (int)(0.5f*UserSingleton.GetInstance().currentStage);
+            UserSingleton.GetInstance().gold -= price; 
+            price += (int)(price*1.25f);
         }
     }
     public virtual void Attack()

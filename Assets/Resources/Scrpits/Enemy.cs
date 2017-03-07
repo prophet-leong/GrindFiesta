@@ -8,6 +8,8 @@ public class Enemy : MonoBehaviour {
         basic,
     };
     public int health;
+    public int Max_Health;
+    public int lootGold;
     public MobType mobType;
     Animator anim;
     SpriteRenderer spriteRenderer;
@@ -71,14 +73,14 @@ public class Enemy : MonoBehaviour {
             
             damageText[i].SetActive(false);
         }
-
-
         /***********************/
     }
 	void Start () 
     {
         //basic stats
-        health = 10;
+        lootGold = 5;
+        Max_Health = 10;
+        health = Max_Health;
         //set the gamescene to parent
         transform.SetParent(GameObject.FindGameObjectWithTag("GameScene").transform);
         //animations and sprites
@@ -86,7 +88,14 @@ public class Enemy : MonoBehaviour {
         anim.SetInteger("State", 0);
         spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/Cat/Idle (1)");
 	}
-	
+	void Reset()
+    {
+        Debug.Log("revive");
+        Max_Health += (int)(Max_Health * 0.2f);
+        health = Max_Health;
+        anim.SetInteger("State", 0);
+        //reset the enemy animatations
+    }
 	// Update is called once per frame
 	void Update ()
     {
@@ -98,7 +107,6 @@ public class Enemy : MonoBehaviour {
             }
         }
 	}
-
     public void TakeDamage(int dmg)
     {
         health -= dmg;
@@ -106,11 +114,13 @@ public class Enemy : MonoBehaviour {
         {
             //dead here
             anim.SetInteger("State", 2);
-            int gold = (int)Mathf.Pow(5.0f+(float)mobType,(float)UserSingleton.GetInstance().currentStage);
+            lootGold += (int)(lootGold * 0.2f);
             goldText.SetActive(true);
-            goldText.GetComponent<Text>().text = gold.ToString() + " Gold";
+            goldText.GetComponent<Text>().text = lootGold.ToString() + " Gold";
             goldText.GetComponent<Animator>().Play("DamageText", 0, 0);
-            UserSingleton.GetInstance().AddGold(gold);
+            UserSingleton.GetInstance().AddGold(lootGold);
+            UserSingleton.GetInstance().NextStage();
+            Reset();
         }
         else
         {
