@@ -25,4 +25,8 @@ public class UserSingleton : Singleton<UserSingleton> {
         currentStage = 1;
         gold = 0;
     }
+    public void AddGold(int goldEarned)
+    {
+        gold += goldEarned;
+    }
 }
