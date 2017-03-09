@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Knight : Hero {
+public class Gunner : Hero
+{
     /*List of declared variables in Hero
     public int attack;
     public int upgradeLevel;
@@ -13,8 +14,8 @@ public class Knight : Hero {
     public Animator anim;
     public GameObject Unit;//this will hold most of the hero componenets
     */
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start()
     {
         //basic init
         attack = 1;
@@ -22,11 +23,11 @@ public class Knight : Hero {
         price = 2;
         attackTimeConst = 100.0f;
         attackTime = attackTimeConst;
-        name = "Knight";
+        name = "Gunner";
         //position for this overall holder
         transform.localPosition = new Vector3(0, 0, -1);
         transform.localScale = new Vector3(0.2f, 0.2f);
-        
+
         /************Make the GameScene the parent of the holder*************/
         transform.SetParent(GameObject.FindGameObjectWithTag("GameScene").transform);
         /**********Make Unit a child of this holder*************/
@@ -39,14 +40,14 @@ public class Knight : Hero {
         Unit.AddComponent<Animator>();
         anim = Unit.GetComponent<Animator>();
         //Loading of sprites and animations
-        anim.runtimeAnimatorController = Resources.Load("Animation/Knight/KnightController") as RuntimeAnimatorController;
-        spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/Knight/Idle (1)");
+        anim.runtimeAnimatorController = Resources.Load("Animation/Gunner/GunnerController") as RuntimeAnimatorController;
+        spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/Gunner/Idle (1)");
         //anim.SetInteger("State", 0);
         /*****************************************************************/
 
         //create the upgrade tab
         UpgradeTabManager.GetInstance().CreateTab(this);
-	}
+    }
     public virtual void UpgradeStats()
     {
         if (UserSingleton.GetInstance().gold - price > 0)

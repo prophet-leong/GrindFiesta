@@ -8,6 +8,7 @@ public class ScreenTap : MonoBehaviour {
 	void Start () 
     {
         UserSingleton.GetInstance();
+        UpgradeTabManager.GetInstance();
 	}
 	
 	// Update is called once per frame
@@ -18,5 +19,13 @@ public class ScreenTap : MonoBehaviour {
     {
         Debug.Log("Attack");
         UserSingleton.GetInstance().mainHero.Attack();
+    }
+    public void NextHero()
+    {
+        UserSingleton.GetInstance().NextHero();
+    }
+    public void PrevHero()
+    {
+        UserSingleton.GetInstance().PrevHero();
     }
 }

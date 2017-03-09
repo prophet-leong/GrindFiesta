@@ -10,6 +10,10 @@ public class Hero : MonoBehaviour {
     public float previousPrice;
     public float attackTime;
     public float attackTimeConst;
+    public string name;
+    public SpriteRenderer spriteRenderer;
+    public Animator anim;
+    public GameObject Unit;//this will hold most of the hero componenets
 	// Use this for initialization
 	void Start () 
     {
@@ -18,6 +22,7 @@ public class Hero : MonoBehaviour {
         price = 1;
         attackTimeConst = 1.0f;
         attackTime = attackTimeConst;
+        name = "hero";
     }
 	
 	// Update is called once per frame
@@ -36,11 +41,13 @@ public class Hero : MonoBehaviour {
     }
     public virtual void UpgradeStats()
     {
+        Debug.Log("UpgradeStatsRan");
         if(UserSingleton.GetInstance().gold - price > 0)
         {
+            Debug.Log("UpgradeStatsAddStats");
             attack += (int)(0.5f*UserSingleton.GetInstance().currentStage);
             UserSingleton.GetInstance().gold -= price; 
-            price += (int)(price*1.25f);
+            price += (int)(price*0.7f);
         }
     }
     public virtual void Attack()

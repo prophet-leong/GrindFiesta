@@ -16,10 +16,13 @@ public class Enemy : MonoBehaviour {
     GameObject damageTextHolder;
     GameObject[] damageText;
     GameObject goldText;
+    GameObject HealthBar;
     int damageTextIndex;
+    bool markDead;
 	// Use this for initialization
     void Awake()
     {
+        markDead = false;
         mobType = MobType.basic;
         /*Enemy initialize*/
         gameObject.AddComponent<SpriteRenderer>();
@@ -35,7 +38,7 @@ public class Enemy : MonoBehaviour {
         damageTextHolder.name = "damageTextHolder";
         damageTextHolder.transform.SetParent(GameObject.FindGameObjectWithTag("Canvas").transform);
         damageTextHolder.transform.position = new Vector3(transform.position.x,transform.position.y,0);
-        damageTextHolder.transform.localScale = new Vector3(1, 1, 1);
+        damageTextHolder.transform.localScale = new Vector3(3, 3, 3);
        
         /**********************gold Text************************/
                          /*Basic initalize*/
@@ -73,7 +76,12 @@ public class Enemy : MonoBehaviour {
             
             damageText[i].SetActive(false);
         }
-        /***********************/
+        /***********************HealthBar******************************/
+        GameObject temp = Resources.Load("Prefabs/HealthBarBack") as GameObject;
+        HealthBar = Instantiate(temp);
+        HealthBar.transform.SetParent(damageTextHolder.transform);
+        HealthBar.transform.localPosition = new Vector3(0, 60, 0);
+        HealthBar.transform.localScale = new Vector3(1, 1, 1);
     }
 	void Start () 
     {
@@ -85,47 +93,71 @@ public class Enemy : MonoBehaviour {
         transform.SetParent(GameObject.FindGameObjectWithTag("GameScene").transform);
         //animations and sprites
         anim.runtimeAnimatorController = Resources.Load("Animation/Cat/CatController") as RuntimeAnimatorController;
-        anim.SetInteger("State", 0);
+        anim.SetInteger("State", 1);
         spriteRenderer.sprite = Resources.Load<Sprite>("Sprites/Cat/Idle (1)");
 	}
 	void Reset()
     {
         Debug.Log("revive");
+        //reset the health
         Max_Health += (int)(Max_Health * 0.2f);
         health = Max_Health;
-        anim.SetInteger("State", 0);
         //reset the enemy animatations
+        anim.Play("Idle", 0, 0.0f);
+        anim.SetInteger("State", 0);
+        //set the dead state to false
+        markDead = false;
+        //Update the health bar
+        UpdateHealthBar();
     }
 	// Update is called once per frame
 	void Update ()
     {
         if(anim.GetInteger("State") == 1)//runs only when its in Hurt state
         {
+            //Debug.Log(anim.GetInteger("State"));
             if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)//if animation is complete set back to 0
             {
                 anim.SetInteger("State", 0);
             }
         }
+        else if (anim.GetInteger("State") == 2)
+        {
+            if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)//if animation is complete set back to 0
+            {
+                Reset();
+            }
+        }
 	}
+    void UpdateHealthBar()
+    {
+        float fill = ((float)health / (float)Max_Health);
+        HealthBar.transform.GetChild(0).GetComponent<Image>().fillAmount = fill;
+        HealthBar.SetActive(!markDead);
+    }
     public void TakeDamage(int dmg)
     {
+        if (markDead)
+            return;
         health -= dmg;
         if(health <= 0)
         {
+            health = 0;
             //dead here
-            anim.SetInteger("State", 2);
             lootGold += (int)(lootGold * 0.2f);
             goldText.SetActive(true);
             goldText.GetComponent<Text>().text = lootGold.ToString() + " Gold";
             goldText.GetComponent<Animator>().Play("DamageText", 0, 0);
             UserSingleton.GetInstance().AddGold(lootGold);
             UserSingleton.GetInstance().NextStage();
-            Reset();
+            anim.Play("Dead", 0, 0.0f);
+            anim.SetInteger("State", 2);
+            markDead = true;
         }
         else
         {
-            anim.SetInteger("State", 1);
             anim.Play("Hurt",0,0.0f);
+            anim.SetInteger("State", 1);
         }
         if(damageTextIndex >= damageText.Length)
         {
@@ -135,5 +167,7 @@ public class Enemy : MonoBehaviour {
         damageText[damageTextIndex].GetComponent<Text>().text = dmg.ToString();
         damageText[damageTextIndex].GetComponent<Animator>().Play("DamageText", 0, 0);
         ++damageTextIndex;
+        //Update the health bar fill amount
+        UpdateHealthBar();
     }
 }
