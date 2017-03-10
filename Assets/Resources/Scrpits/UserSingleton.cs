@@ -20,13 +20,14 @@ public class UserSingleton : Singleton<UserSingleton> {
         /**********Gunner********/
         GameObject newHero = new GameObject();
         newHero.AddComponent<Gunner>();
-        heroList.Add(newHero.GetComponent<Gunner>());//this will not be new hero(), and will solve the warnings//TODO:Solve the Warnings
+        heroList.Add(newHero.GetComponent<Gunner>());
         /*********Knight*********/
         newHero = new GameObject();
         newHero.AddComponent<Knight>();
-        newHero.SetActive(false);
-        heroList.Add(newHero.GetComponent<Knight>());//this will not be new hero(), and will solve the warnings//TODO:Solve the Warnings
+        heroList.Add(newHero.GetComponent<Knight>());
 
+        heroList[0].SetToMain();
+        heroList[1].PutToSideLines(1);
 
         mainHero = heroList[0];
         GameObject newEnemy = new GameObject();
@@ -65,13 +66,16 @@ public class UserSingleton : Singleton<UserSingleton> {
         ++currentSelectedHero;
         if(currentSelectedHero < heroList.Count)
         {
-            mainHero.gameObject.SetActive(false);
+            mainHero.PutToSideLines(currentSelectedHero);
             mainHero = heroList[currentSelectedHero];
-            mainHero.gameObject.SetActive(true);
+            mainHero.SetToMain();
         }
         else
         {
             currentSelectedHero = 0;
+            mainHero.PutToSideLines(currentSelectedHero);
+            mainHero = heroList[currentSelectedHero];
+            mainHero.SetToMain();
         }
     }
     public void PrevHero()
@@ -79,13 +83,16 @@ public class UserSingleton : Singleton<UserSingleton> {
         --currentSelectedHero;
         if (currentSelectedHero >= 0)
         {
-            mainHero.gameObject.SetActive(false);
+            mainHero.PutToSideLines(currentSelectedHero);
             mainHero = heroList[currentSelectedHero];
-            mainHero.gameObject.SetActive(true);
+            mainHero.SetToMain();
         }
         else
         {
             currentSelectedHero = heroList.Count-1;
+            mainHero.PutToSideLines(currentSelectedHero);
+            mainHero = heroList[currentSelectedHero];
+            mainHero.SetToMain();
         }
     }
 }

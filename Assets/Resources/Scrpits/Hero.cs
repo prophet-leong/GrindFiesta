@@ -54,4 +54,40 @@ public class Hero : MonoBehaviour {
     {
         UserSingleton.GetInstance().enemy.TakeDamage(attack);
     }
+    public void InitPosition()
+    {
+        if(UserSingleton.GetInstance().mainHero == this)
+        {
+            this.SetToMain();
+        }
+        else
+        {
+            for (int i = 0; i < 0;++i)
+            {
+                if(UserSingleton.GetInstance().heroList[i] == this)
+                {
+                    PutToSideLines(i);
+                    return;
+                }
+            }
+        }
+    }
+    public void PutToSideLines(int position)
+    {
+        int direction = position % 2;
+        int placement ;
+        if(direction == 1)
+            placement = -(position +2)/2;
+        else
+            placement = (position +2) / 2;
+        /********move it to the sidelines**********/
+        transform.localPosition = new Vector3(placement *0.5f, 0, -1);
+        transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+    }
+    public void SetToMain()
+    {
+        /********move it to the sidelines**********/
+        transform.localPosition = new Vector3(0, 0, 0);
+        transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+    }
 }

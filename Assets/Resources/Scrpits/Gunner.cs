@@ -21,18 +21,18 @@ public class Gunner : Hero
         attack = 1;
         upgradeLevel = 1;
         price = 2;
-        attackTimeConst = 100.0f;
+        attackTimeConst = 1.0f;
         attackTime = attackTimeConst;
         name = "Gunner";
         //position for this overall holder
-        transform.localPosition = new Vector3(0, 0, -1);
-        transform.localScale = new Vector3(0.2f, 0.2f);
+        InitPosition();
 
         /************Make the GameScene the parent of the holder*************/
         transform.SetParent(GameObject.FindGameObjectWithTag("GameScene").transform);
         /**********Make Unit a child of this holder*************/
         Unit = new GameObject();
         Unit.transform.SetParent(transform);
+        Unit.transform.localPosition = new Vector3(0, 0, 0);
         Unit.transform.localScale = new Vector3(1, 1, 1);
         /***********************Unit componenets**************************/
         Unit.AddComponent<SpriteRenderer>();
