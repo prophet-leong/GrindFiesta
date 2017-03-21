@@ -25,7 +25,6 @@ public class Gunner : Hero
         attackTime = attackTimeConst;
         name = "Gunner";
         //position for this overall holder
-        InitPosition();
 
         /************Make the GameScene the parent of the holder*************/
         transform.SetParent(GameObject.FindGameObjectWithTag("GameScene").transform);
@@ -33,6 +32,7 @@ public class Gunner : Hero
         Unit = new GameObject();
         Unit.transform.SetParent(transform);
         Unit.transform.localPosition = new Vector3(0, 0, 0);
+        InitPosition();
         Unit.transform.localScale = new Vector3(1, 1, 1);
         /***********************Unit componenets**************************/
         Unit.AddComponent<SpriteRenderer>();
@@ -48,12 +48,12 @@ public class Gunner : Hero
         //create the upgrade tab
         UpgradeTabManager.GetInstance().CreateTab(this);
     }
-    public virtual void UpgradeStats()
+    public override void UpgradeStats()
     {
-        if (UserSingleton.GetInstance().gold - price > 0)
+        if (UserSingleton.GetInstance().gold - price >= 0)
         {
             attack += (int)(0.5f * UserSingleton.GetInstance().currentStage);
-            UserSingleton.GetInstance().gold -= price;
+            UserSingleton.GetInstance().AddGold(-price);
             price += (int)(price * 1.25f);
         }
     }

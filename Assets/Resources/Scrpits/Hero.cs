@@ -58,15 +58,17 @@ public class Hero : MonoBehaviour {
     {
         if(UserSingleton.GetInstance().mainHero == this)
         {
+            Debug.Log("RAN");
             this.SetToMain();
         }
         else
         {
-            for (int i = 0; i < 0;++i)
+            for (int i = 0; i < UserSingleton.GetInstance().heroList.Count;++i)
             {
                 if(UserSingleton.GetInstance().heroList[i] == this)
                 {
-                    PutToSideLines(i);
+                    PutToSideLines(i-1);
+                    Debug.Log("RAN2");
                     return;
                 }
             }

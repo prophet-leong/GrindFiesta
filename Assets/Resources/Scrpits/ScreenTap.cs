@@ -4,6 +4,7 @@ using System.Collections;
 
 public class ScreenTap : MonoBehaviour {
 
+    GameObject dragDetect;
 	// Use this for initialization
 	void Start () 
     {
@@ -12,8 +13,9 @@ public class ScreenTap : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
+	void Update () 
+    {
+        //UpgradeTabManager.GetInstance().DragResponse();
 	}
     void OnMouseDown()
     {

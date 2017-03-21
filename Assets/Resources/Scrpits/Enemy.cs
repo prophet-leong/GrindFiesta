@@ -82,13 +82,14 @@ public class Enemy : MonoBehaviour {
         HealthBar.transform.SetParent(damageTextHolder.transform);
         HealthBar.transform.localPosition = new Vector3(0, 60, 0);
         HealthBar.transform.localScale = new Vector3(1, 1, 1);
+        /***Basic stats**/
+        lootGold = 5;
+        Max_Health = 10;
+        health = Max_Health;
     }
 	void Start () 
     {
         //basic stats
-        lootGold = 5;
-        Max_Health = 10;
-        health = Max_Health;
         //set the gamescene to parent
         transform.SetParent(GameObject.FindGameObjectWithTag("GameScene").transform);
         //animations and sprites
