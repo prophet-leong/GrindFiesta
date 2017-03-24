@@ -23,6 +23,10 @@ public class Knight : Hero {
         attackTimeConst = 1.0f;
         attackTime = attackTimeConst;
         name = "Knight";
+
+        SpecialAttackCD = 60.0f;
+        SpecialAttackCurrentCD = 1.0f;
+        specialAttackAvaliable = true;
     }
 	void Start ()
     {
@@ -64,6 +68,7 @@ public class Knight : Hero {
     {
         attackEnemy();
         AutoIdle();
+        UpdateSpecial();
     }
     void AutoIdle()
     {
@@ -95,5 +100,6 @@ public class Knight : Hero {
         anim.Play("SpecialAttack", 0, 0.0f);
         anim.SetInteger("State", 2);
         UserSingleton.GetInstance().enemy.TakeDamage(attack * 100);
+        UseSpecial();
     }
 }

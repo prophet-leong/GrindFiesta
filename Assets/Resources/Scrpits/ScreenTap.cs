@@ -37,9 +37,13 @@ public class ScreenTap : MonoBehaviour {
     }
     void OnMouseUp()
     {
-        heldDown = false;
-        Debug.Log("Attack");
-        UserSingleton.GetInstance().mainHero.Attack();
+        if(heldDown == true)
+        {
+            heldDown = false;
+            holdDownTimer = 1.0f;
+            Debug.Log("Attack");
+            UserSingleton.GetInstance().mainHero.Attack();
+        }
     }
     public void NextHero()
     {

@@ -14,6 +14,10 @@ public class Hero : MonoBehaviour {
     public SpriteRenderer spriteRenderer;
     public Animator anim;
     public GameObject Unit;//this will hold most of the hero componenets
+
+    public float SpecialAttackCD;
+    public float SpecialAttackCurrentCD;
+    public bool specialAttackAvaliable;
 	// Use this for initialization
 	void Start () 
     {
@@ -95,5 +99,21 @@ public class Hero : MonoBehaviour {
         /********move it to the sidelines**********/
         transform.localPosition = new Vector3(0, 0, 0);
         transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+    }
+    public void UseSpecial()
+    {
+        specialAttackAvaliable = false;
+        SpecialAttackCurrentCD = SpecialAttackCD;
+    }
+    public void UpdateSpecial()
+    {
+        if (specialAttackAvaliable == false)
+        {
+            SpecialAttackCurrentCD -= Time.deltaTime;
+            if (SpecialAttackCurrentCD <= 0.0f)
+            {
+                specialAttackAvaliable = true;
+            }
+        }
     }
 }

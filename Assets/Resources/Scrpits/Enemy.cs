@@ -27,6 +27,7 @@ public class Enemy : MonoBehaviour {
         /*Enemy initialize*/
         gameObject.AddComponent<SpriteRenderer>();
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        
         gameObject.AddComponent<Animator>();
         anim = gameObject.GetComponent<Animator>();
         transform.localPosition = new Vector3(0, 1.5f);
