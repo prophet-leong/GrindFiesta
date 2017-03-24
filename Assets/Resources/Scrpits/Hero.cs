@@ -54,6 +54,10 @@ public class Hero : MonoBehaviour {
     {
         UserSingleton.GetInstance().enemy.TakeDamage(attack);
     }
+    public virtual void SpecialSkill()
+    {
+
+    }
     public void InitPosition()
     {
         if(UserSingleton.GetInstance().mainHero == this)

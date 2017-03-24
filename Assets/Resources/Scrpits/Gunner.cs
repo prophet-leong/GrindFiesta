@@ -15,7 +15,7 @@ public class Gunner : Hero
     public GameObject Unit;//this will hold most of the hero componenets
     */
     // Use this for initialization
-    void Start()
+    public Gunner()
     {
         //basic init
         attack = 1;
@@ -24,6 +24,9 @@ public class Gunner : Hero
         attackTimeConst = 1.0f;
         attackTime = attackTimeConst;
         name = "Gunner";
+    }
+    void Start()
+    {
         //position for this overall holder
 
         /************Make the GameScene the parent of the holder*************/
@@ -87,5 +90,11 @@ public class Gunner : Hero
         UserSingleton.GetInstance().enemy.TakeDamage(attack);
         anim.Play("Attack", 0, 0.0f);
         anim.SetInteger("State", 1);
+    }
+    public override void SpecialSkill()
+    {
+        anim.Play("SpecialAttack", 0, 0.0f);
+        anim.SetInteger("State", 2);
+        UserSingleton.GetInstance().enemy.TakeDamage(attack * 100);
     }
 }

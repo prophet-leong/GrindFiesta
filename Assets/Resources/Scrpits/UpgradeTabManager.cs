@@ -49,7 +49,7 @@ public class UpgradeTabManager : Singleton<UpgradeTabManager>
         Options.GetComponent<RectTransform>().sizeDelta = new Vector2(UpgradeTabPrefab.GetComponent<RectTransform>().rect.width,OptionsHolderheight );
         Options.transform.localPosition = new Vector3(0, UserSingleton.GetInstance().Options.GetComponent<RectTransform>().rect.height - OptionsHolderheight,0);
         /******************Basic transform*********************/
-        GameObject newTab = new GameObject();
+        GameObject newTab ;
         newTab = GameObject.Instantiate(UpgradeTabPrefab);
         newTab.transform.SetParent(Options.transform);
         newTab.transform.localPosition = new Vector3(0,  UpgradeTabUnitPos * (-tabs.Count), 0);
@@ -63,8 +63,7 @@ public class UpgradeTabManager : Singleton<UpgradeTabManager>
         newTab.transform.FindChild("Price").gameObject.AddComponent<CharacterPurchase>();
         newTab.transform.FindChild("Price").gameObject.GetComponent<CharacterPurchase>().SetHero(hero,tabs.Count);
         /******************Create the upgrade tab********************/
-
-        newTab.transform.FindChild("Price/PriceTag").GetComponent<Text>().text = hero.upgradeLevel.ToString() + " Gold";
+        newTab.transform.FindChild("Price/PriceTag").GetComponent<Text>().text = hero.price.ToString() + " Gold";
         newTab.transform.FindChild("UnitFace").GetComponent<Image>().sprite = hero.spriteRenderer.sprite;
         newTab.transform.FindChild("Name").GetComponent<Text>().text = hero.name;
         newTab.transform.FindChild("Attack").GetComponent<Text>().text = "Attack :" + hero.attack.ToString();

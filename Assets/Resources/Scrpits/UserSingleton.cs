@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public class UserSingleton : Singleton<UserSingleton> { 
 
     public List<Hero> heroList;
-    public int currentSelectedHero;
+    public int currentSelectedHero = 0;
     public Hero mainHero;
     public Enemy enemy;
     public int currentStage;
@@ -29,28 +29,55 @@ public class UserSingleton : Singleton<UserSingleton> {
         enemy.mobType = mobtype;
         Debug.Log(enemy.lootGold);
     }
+    public void CreateHero(int attack, int upgradeLevel ,int price,int previousPrice,int attackTime,string name)
+    {
+        GameObject newHero;
+        Debug.Log(name);
+        if(name == "Gunner")
+        {
+            newHero = new GameObject();
+            newHero.AddComponent<Gunner>();
+            heroList.Add(newHero.GetComponent<Gunner>());
+            newHero.name = "Gunner";
+        }
+        else
+        {
+            newHero = new GameObject();
+            newHero.AddComponent<Knight>();
+            heroList.Add(newHero.GetComponent<Knight>());
+            newHero.name = "Knight";
+        }
+        if (heroList.Count == 1)
+            mainHero = heroList[0];
+        Hero hero = newHero.GetComponent<Hero>();
+        hero.attack = attack;
+        hero.upgradeLevel = upgradeLevel;
+        hero.price = price;
+        hero.previousPrice = previousPrice;
+        hero.attackTimeConst = attackTime;
+    }
     //constructor since the start function wont run
     public UserSingleton()
     {
         heroList = new List<Hero>();
         /**********Gunner********/
-        GameObject newHero = new GameObject();
-        newHero.AddComponent<Gunner>();
-        heroList.Add(newHero.GetComponent<Gunner>());
-        /*********Knight*********/
-        for (int i = 0; i < 5;++i )
-        {
-            newHero = new GameObject();
-            newHero.AddComponent<Knight>();
-            //newHero.GetComponent<Hero>().PutToSideLines(heroList.Count);
-            heroList.Add(newHero.GetComponent<Knight>());
+        //GameObject newHero = new GameObject();
+        //newHero.AddComponent<Gunner>();
+        //heroList.Add(newHero.GetComponent<Gunner>());
+        ///*********Knight*********/
+        //for (int i = 0; i < 5;++i )
+        //{
+        //    newHero = new GameObject();
+        //    newHero.AddComponent<Knight>();
+        //    //newHero.GetComponent<Hero>().PutToSideLines(heroList.Count);
+        //    heroList.Add(newHero.GetComponent<Knight>());
 
-        }
+        //}
 
         //heroList[0].SetToMain();
         //heroList[1].PutToSideLines(1);
 
-        mainHero = heroList[0];
+        //mainHero = heroList[0];
         GameObject newEnemy = new GameObject();
         newEnemy.AddComponent<Enemy>();
         enemy = newEnemy.GetComponent<Enemy>();//same as the hero warnings//TODO:Solve the Warnings

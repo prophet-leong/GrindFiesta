@@ -44,6 +44,7 @@ public class Enemy : MonoBehaviour {
                          /*Basic initalize*/
         goldText = new GameObject();
         goldText.transform.SetParent(damageTextHolder.transform);
+        goldText.name = "GoldText";
         //text
         goldText.AddComponent<Text>();
         goldText.GetComponent<RectTransform>().rect.Set(0, 0, 160, 30);
@@ -51,6 +52,7 @@ public class Enemy : MonoBehaviour {
         goldText.GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
         goldText.GetComponent<Text>().fontSize = 20;
         goldText.GetComponent<Text>().color = new Color(1.0f,0.9f,0.0f);//gold color
+        goldText.GetComponent<Text>().raycastTarget = false;
         //animator
         goldText.AddComponent<Animator>();
         goldText.GetComponent<Animator>().runtimeAnimatorController = Resources.Load("Animation/DamageText/Text") as RuntimeAnimatorController;
@@ -63,6 +65,7 @@ public class Enemy : MonoBehaviour {
         {
             /*Basic initalize*/
             damageText[i] = new GameObject();
+            damageText[i].name = "DamageText" + i.ToString();
             damageText[i].transform.SetParent(damageTextHolder.transform);
             //text
             damageText[i].AddComponent<Text>();
@@ -70,6 +73,7 @@ public class Enemy : MonoBehaviour {
             damageText[i].GetComponent<Text>().font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
             damageText[i].GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
             damageText[i].GetComponent<Text>().fontSize = 20;
+            damageText[i].GetComponent<Text>().raycastTarget = false;
             //animator
             damageText[i].AddComponent<Animator>();
             damageText[i].GetComponent<Animator>().runtimeAnimatorController = Resources.Load("Animation/DamageText/Text") as RuntimeAnimatorController;
@@ -167,6 +171,16 @@ public class Enemy : MonoBehaviour {
         damageText[damageTextIndex].SetActive(true);
         damageText[damageTextIndex].GetComponent<Text>().text = dmg.ToString();
         damageText[damageTextIndex].GetComponent<Animator>().Play("DamageText", 0, 0);
+        if(dmg > (int)(health*0.1f))
+        {
+            damageText[damageTextIndex].GetComponent<Text>().color = new Color(1,0,0);
+            damageText[damageTextIndex].transform.localScale = new Vector3 (2,2,2);
+        }
+        else if (damageText[damageTextIndex].transform.localScale.x != 1)//if the image is not scalled correctly its color will be wrong (for now)
+        {
+            damageText[damageTextIndex].GetComponent<Text>().color = new Color(1, 1, 1);
+            damageText[damageTextIndex].transform.localScale = new Vector3(1, 1, 1);
+        }
         ++damageTextIndex;
         //Update the health bar fill amount
         UpdateHealthBar();

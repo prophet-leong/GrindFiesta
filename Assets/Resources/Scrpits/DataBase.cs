@@ -7,6 +7,7 @@ public class DataBase : MonoBehaviour {
 
     IDbConnection dbconn;
     string name;
+    int numberOfHeros;
     void Start()
     {
         string conn;
@@ -21,7 +22,7 @@ public class DataBase : MonoBehaviour {
         dbconn.Open(); //Open connection to the database.
         ReadPlayerStats();
         ReadEnemyStats();
-
+        ReadHeroStats();
         
         //dbconn.Close();
         //dbconn = null;
@@ -83,7 +84,7 @@ public class DataBase : MonoBehaviour {
                  + UserSingleton.GetInstance().heroList[i].upgradeLevel.ToString() + ", "
                   + UserSingleton.GetInstance().heroList[i].price.ToString() + ", "
                    + UserSingleton.GetInstance().heroList[i].previousPrice.ToString() + ", "
-                    + ((int)UserSingleton.GetInstance().heroList[i].attackTime).ToString() + ", "
+                    + "1" + ", "
                      + "'" + UserSingleton.GetInstance().heroList[i].name + "'" + ", "
                       + "1" + ") ";
             reader.Close();
@@ -98,7 +99,7 @@ public class DataBase : MonoBehaviour {
     }
     void ReadPlayerStats()
     {
-        string sqlQuery = "SELECT name,gold, stageNumber " + "FROM User " + "WHERE name = 'user'";
+        string sqlQuery = "SELECT name,gold, stageNumber,numberOfHeros " + "FROM User " + "WHERE name = 'user'";
         IDbCommand dbcmd = dbconn.CreateCommand();
         dbcmd.CommandText = sqlQuery;
         IDataReader reader = dbcmd.ExecuteReader();
@@ -107,6 +108,7 @@ public class DataBase : MonoBehaviour {
             name = reader.GetString(0);
             int gold = reader.GetInt32(1);
             int stageNumber = reader.GetInt32(2);
+            numberOfHeros = reader.GetInt32(3);
             UserSingleton.GetInstance().SetData(gold, stageNumber);
             //Debug.Log("value= " + value + "  name =" + name + "  random =" + rand);
         }
@@ -134,7 +136,30 @@ public class DataBase : MonoBehaviour {
         dbcmd.Dispose();
         dbcmd = null;
     }
-
+    void ReadHeroStats()
+    {
+        string sqlQuery = "SELECT attack,upgradeLevel, price,previousPrice,attackTime,name " + "FROM UnitsData ";
+        IDbCommand dbcmd = dbconn.CreateCommand();
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+        for(int i = 0;i < numberOfHeros;++i)
+        {
+            if (reader.Read())
+            {
+                int attack = reader.GetInt32(0);
+                int upgradeLevel = reader.GetInt32(1);
+                int price = reader.GetInt32(2);
+                int previousPrice = reader.GetInt32(3);
+                int attackTime = reader.GetInt32(4);
+                string heroName = reader.GetString(5);
+                UserSingleton.GetInstance().CreateHero(attack, upgradeLevel, price, previousPrice, attackTime, heroName);
+            }
+        }
+        reader.Close();
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+    }
     void OnApplicationQuit()
     {
         SaveToDataBase();
