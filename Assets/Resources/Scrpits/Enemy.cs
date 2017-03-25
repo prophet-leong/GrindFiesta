@@ -48,6 +48,7 @@ public class Enemy : MonoBehaviour {
         goldText.name = "GoldText";
         //text
         goldText.AddComponent<Text>();
+        goldText.transform.localScale = new Vector3(1, 1, 1);
         goldText.GetComponent<RectTransform>().rect.Set(0, 0, 160, 30);
         goldText.GetComponent<Text>().font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
         goldText.GetComponent<Text>().alignment = TextAnchor.MiddleCenter;

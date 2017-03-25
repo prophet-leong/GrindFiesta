@@ -84,6 +84,16 @@ public class UpgradeTabManager : Singleton<UpgradeTabManager>
         tabs[tabNumber].transform.FindChild("Price/PriceTag").GetComponent<Text>().text = hero.price.ToString() + " Gold";
         tabs[tabNumber].transform.FindChild("Attack").GetComponent<Text>().text = "Attack :" + hero.attack.ToString();
     }
+    public void SkillCD(int position)
+    {
+        tabs[position].GetComponent<Image>().color = Color.gray;
+        tabs[position].transform.FindChild("UnitFace").GetComponent<Image>().color = Color.gray;
+    }
+    public void SkillEndCD(int position)
+    {
+        tabs[position].GetComponent<Image>().color = Color.white;
+        tabs[position].transform.FindChild("UnitFace").GetComponent<Image>().color = Color.white;
+    }
     //public void DragResponse()
     //{
     //    if(dragDetect.dragging == true)

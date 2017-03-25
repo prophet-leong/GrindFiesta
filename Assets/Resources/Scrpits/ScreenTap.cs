@@ -25,6 +25,7 @@ public class ScreenTap : MonoBehaviour {
             holdDownTimer -= Time.deltaTime;
             if(holdDownTimer <= 0)
             {
+                Debug.Log("SPECIAL");
                 holdDownTimer = 1.0f;
                 heldDown = false;
                 UserSingleton.GetInstance().mainHero.SpecialSkill();
@@ -41,7 +42,7 @@ public class ScreenTap : MonoBehaviour {
         {
             heldDown = false;
             holdDownTimer = 1.0f;
-            Debug.Log("Attack");
+            Debug.Log("Attack click");
             UserSingleton.GetInstance().mainHero.Attack();
         }
     }

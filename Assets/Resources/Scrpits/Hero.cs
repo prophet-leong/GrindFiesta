@@ -14,7 +14,7 @@ public class Hero : MonoBehaviour {
     public SpriteRenderer spriteRenderer;
     public Animator anim;
     public GameObject Unit;//this will hold most of the hero componenets
-
+    public int Position;
     public float SpecialAttackCD;
     public float SpecialAttackCurrentCD;
     public bool specialAttackAvaliable;
@@ -27,6 +27,7 @@ public class Hero : MonoBehaviour {
         attackTimeConst = 1.0f;
         attackTime = attackTimeConst;
         name = "hero";
+        Position = 0;
     }
 	
 	// Update is called once per frame
@@ -60,7 +61,13 @@ public class Hero : MonoBehaviour {
     }
     public virtual void SpecialSkill()
     {
-
+        if (specialAttackAvaliable == false)
+        {
+            anim.Play("SpecialAttack", 0, 0.0f);
+            anim.SetInteger("State", 2);
+            UserSingleton.GetInstance().enemy.TakeDamage(attack * 100);
+            UseSpecial();
+        }
     }
     public void InitPosition()
     {
@@ -84,6 +91,7 @@ public class Hero : MonoBehaviour {
     }
     public void PutToSideLines(int position)
     {
+        this.Position = position + 1;
         int direction = position % 2;
         int placement ;
         if(direction == 1)

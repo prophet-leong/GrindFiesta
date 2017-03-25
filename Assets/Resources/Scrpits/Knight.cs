@@ -24,7 +24,7 @@ public class Knight : Hero {
         attackTime = attackTimeConst;
         name = "Knight";
 
-        SpecialAttackCD = 60.0f;
+        SpecialAttackCD = 1.0f;
         SpecialAttackCurrentCD = 1.0f;
         specialAttackAvaliable = true;
     }
@@ -83,7 +83,7 @@ public class Knight : Hero {
     public override void attackEnemy()
     {
         attackTime -= Time.deltaTime;
-        if (attackTime <= 0)
+        if (attackTime <= 0 && UserSingleton.GetInstance().mainHero != this)
         {
             attackTime = attackTimeConst;
             Attack();
@@ -97,9 +97,13 @@ public class Knight : Hero {
     }
     public override void SpecialSkill()
     {
-        anim.Play("SpecialAttack", 0, 0.0f);
-        anim.SetInteger("State", 2);
-        UserSingleton.GetInstance().enemy.TakeDamage(attack * 100);
-        UseSpecial();
+        Debug.Log("SPECIAL ATTACK");
+        if (specialAttackAvaliable == true)
+        {
+            anim.Play("SpecialAttack", 0, 0.0f);
+            //anim.SetInteger("State", 2);
+            UserSingleton.GetInstance().enemy.TakeDamage(attack * 100);
+            UseSpecial();
+        }
     }
 }
